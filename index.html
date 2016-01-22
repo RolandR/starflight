@@ -4,11 +4,34 @@
 		<title>
 			Three Dimensions!
 		</title>
+		<style>
+			*{
+				border: none;
+				margin: 0px;
+				padding: 0px;
+			}
+
+			#container{
+				position: absolute;
+				top: 0px;
+				right: 0px;
+				bottom: 0px;
+				left: 0px;
+			}
+
+			html, body{
+				height: 100%;
+				width: 100%;
+				overflow: hidden;
+			}
+		</style>
 	</head>
 	<body>
-		<canvas style="border: 1px #000000 solid;" id="renderCanvas" width="600" height="600">
-			
-		</canvas>
+		<div id="container">
+			<canvas id="renderCanvas" width="600" height="600">
+				
+			</canvas>
+		</div>
 	</body>
 	<script type="text/javascript" src="./3d.js"></script>
 </html>

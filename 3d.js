@@ -1,127 +1,3 @@
-/*var objects = [
-	{
-		 type: "point"
-		,x: 0
-		,y: 0
-		,z: 0
-	}
-	,{
-		 type: "point"
-		,x: 0.5
-		,y: 0
-		,z: 0
-	}
-	,{
-		 type: "point"
-		,x: 1
-		,y: 0
-		,z: 0
-	}
-	,{
-		 type: "point"
-		,x: 0
-		,y: 0
-		,z: 0.5
-	}
-	,{
-		 type: "point"
-		,x: 0
-		,y: 0
-		,z: 1
-	}
-	,{
-		 type: "point"
-		,x: 1
-		,y: 0
-		,z: 0.5
-	}
-	,{
-		 type: "point"
-		,x: 0.5
-		,y: 0
-		,z: 1
-	}
-	,{
-		 type: "point"
-		,x: 1
-		,y: 0
-		,z: 1
-	}
-	,{
-		 type: "point"
-		,x: 0
-		,y: 0.5
-		,z: 0
-	}
-	,{
-		 type: "point"
-		,x: 0
-		,y: 1
-		,z: 0
-	}
-	,{
-		 type: "point"
-		,x: 0.5
-		,y: 1
-		,z: 0
-	}
-	,{
-		 type: "point"
-		,x: 1
-		,y: 0.5
-		,z: 0
-	}
-	,{
-		 type: "point"
-		,x: 1
-		,y: 1
-		,z: 0
-	}
-	,{
-		 type: "point"
-		,x: 0
-		,y: 0.5
-		,z: 1
-	}
-	,{
-		 type: "point"
-		,x: 0
-		,y: 1
-		,z: 0.5
-	}
-	,{
-		 type: "point"
-		,x: 0
-		,y: 1
-		,z: 1
-	}
-	,{
-		 type: "point"
-		,x: 0.5
-		,y: 1
-		,z: 1
-	}
-	,{
-		 type: "point"
-		,x: 1
-		,y: 0.5
-		,z: 1
-	}
-	,{
-		 type: "point"
-		,x: 1
-		,y: 1
-		,z: 0.5
-	}
-	,{
-		 type: "point"
-		,x: 1
-		,y: 1
-		,z: 1
-	}
-];
-*/
-
 var objects = [];
 
 var World = {
@@ -129,6 +5,11 @@ var World = {
 };
 
 var PI = Math.PI;
+
+var canvas = document.getElementById("renderCanvas");
+canvas.width = document.getElementById("container").offsetWidth;
+canvas.height = document.getElementById("container").offsetHeight;
+var context = canvas.getContext("2d");
 
 setInterval(rotateAndRender, 10);
 
@@ -138,14 +19,14 @@ function rotateAndRender(){
 		objects.push(
 			{
 				 type: "point"
-				,x: Math.random()
-				,y: Math.random()
-				,z: Math.random()
+				,x: Math.random() * canvas.width * 2
+				,y: 0
+				,z: Math.random() * canvas.width * 2 - (canvas.width - canvas.height)
 			}
 		);
 		
-		scale(objects[objects.length-1], 1200);
-		transform(objects[objects.length-1], [-300, 900, -300]);
+		//scale(objects[objects.length-1], canvas.width);
+		transform(objects[objects.length-1], [0-canvas.width/2, World.vanishingPoint, 0-canvas.height/2]);
 	}
 	
 	var i = objects.length;
@@ -157,9 +38,6 @@ function rotateAndRender(){
 	
 	//console.log("Point count: "+objects.length);
 	
-	var canvas = document.getElementById('renderCanvas');
-	var context = canvas.getContext("2d");
-	//context.fillStyle = "rgba(0, 0, 0, 0.1)";
 	context.fillStyle = "#000000";
 	context.fillRect(0, 0, canvas.width, canvas.height);
 	for(var i in objects){
@@ -167,7 +45,7 @@ function rotateAndRender(){
 		//rotate(objects[i], [(PI/910), (PI/1320), (PI/600)], [600, 400, 600]);
 		//transform(objects[i], [0, 2, -0.5]);
 		
-		rotate(objects[i], [0, (PI/800), 0], [300, 400, 300]);
+		rotate(objects[i], [0, (PI/800), 0], [canvas.width/2, 400, canvas.height/2]);
 		
 		//transform(objects[i], [0, 0, Math.sin((objects[i].y / World.vanishingPoint)*5)*2]);
 		
@@ -178,11 +56,11 @@ function rotateAndRender(){
 }
 
 function render(object, canvas){
-	var context = canvas.getContext("2d");
 	if(object.type == "point"){
 		if(object.y < World.vanishingPoint && object.y > 0){
 			var c = minmax(Math.round(255 * (object.y / World.vanishingPoint)), 0, 255);
 			c = 255-c;
+			//c = 255;
 			context.fillStyle = "rgb("+c+", "+c+", "+c+")";
 			context.fillRect(
 				 (object.x + (1-(1/(5*(object.y / World.vanishingPoint)))) * (canvas.width/2 - object.x)) - 1
