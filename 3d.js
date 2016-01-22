@@ -11,11 +11,16 @@ canvas.width = document.getElementById("container").offsetWidth;
 canvas.height = document.getElementById("container").offsetHeight;
 var context = canvas.getContext("2d");
 
-setInterval(rotateAndRender, 10);
+window.onresize = function(){
+	canvas.width = document.getElementById("container").offsetWidth;
+	canvas.height = document.getElementById("container").offsetHeight;
+};
+
+rotateAndRender();
 
 function rotateAndRender(){
 	
-	for(var i = 0; i < 2; i++){
+	for(var i = 0; i < 5; i++){
 		objects.push(
 			{
 				 type: "point"
@@ -38,21 +43,19 @@ function rotateAndRender(){
 	
 	//console.log("Point count: "+objects.length);
 	
-	context.fillStyle = "#000000";
+	context.fillStyle = "rgba(0, 0, 0, 0.6)";
 	context.fillRect(0, 0, canvas.width, canvas.height);
 	for(var i in objects){
-		//rotate(objects[i], [PI/80, PI/110, PI/210], [300, 400, 300]);
-		//rotate(objects[i], [(PI/910), (PI/1320), (PI/600)], [600, 400, 600]);
-		//transform(objects[i], [0, 2, -0.5]);
 		
 		rotate(objects[i], [0, (PI/800), 0], [canvas.width/2, 400, canvas.height/2]);
-		
-		//transform(objects[i], [0, 0, Math.sin((objects[i].y / World.vanishingPoint)*5)*2]);
 		
 		transform(objects[i], [0, -2, 0]);
 		
 		render(objects[i], canvas);
 	}
+
+	window.requestAnimationFrame(rotateAndRender);
+	
 }
 
 function render(object, canvas){
